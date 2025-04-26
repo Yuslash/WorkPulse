@@ -1,0 +1,49 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folders
+venv/
+env/
+
+# Python distribution packages
+*.egg
+*.egg-info
+*.dist-info
+*.whl
+
+# IDE settings
+.vscode/
+.idea/
+
+# PyCharm specific
+.idea/
+
+# MacOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Qt Designer .ui files (optional if you're using .ui files in your project)
+*.ui
+
+# Log files
+*.log
+
+# User-specific files
+*.swp
+*.swo
+
+# PyQt5 temporary files
+*.bak
