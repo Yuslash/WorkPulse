@@ -22,69 +22,99 @@
 
 </div>
 
-## 📸 Product Previews
+## 📸 Product Previews & Themes
 
-### 1. Executive Overview & Analytics Dashboard
-Real-time organizational telemetry, active work hours, presence tracking, attendance trends, and recent system audit events.
+### 🎨 Interactive Theme & Layout Switcher
+*WorkPulse features 5 curated color palettes and 2 adaptive navigation modes (Topbar & Left Sidebar with ⌘K search). Click below to preview each theme:*
 
-![Executive Overview Dashboard](preview/03_overview_dashboard.png)
+<details open>
+<summary><b>☀️ Warm Cream (Light — Signature Classic)</b></summary>
+<br/>
+
+> *Warm parchment ground with energized coral accents and rich espresso typography.*
+
+![Warm Cream Theme](preview/03_overview_dashboard.png)
+</details>
+
+<details>
+<summary><b>🌙 Obsidian Midnight (Dark — Cyber Luxury)</b></summary>
+<br/>
+
+> *Deep cosmic dark backdrop with glowing electric indigo highlights and crisp silver typography.*
+
+![Obsidian Midnight Theme](preview/15_dark_theme_dashboard.png)
+</details>
+
+<details>
+<summary><b>❄️ Nordic Frost (Light — Pure Minimalist Ice)</b></summary>
+<br/>
+
+> *Scandinavian minimalist light palette with pure porcelain cards and vivid azure sky accents.*
+
+![Nordic Frost Theme](preview/theme_nordic_frost.png)
+</details>
+
+<details>
+<summary><b>🌲 Emerald Forest (Dark — Velvet Botanical)</b></summary>
+<br/>
+
+> *Deep botanical dark theme with velvety evergreen tones and luminous spring mint highlights.*
+
+![Emerald Forest Theme](preview/theme_emerald_forest.png)
+</details>
+
+<details>
+<summary><b>🌇 Cyberpunk Sunset (Dark — Synthwave Night)</b></summary>
+<br/>
+
+> *High-energy synthwave night theme with deep plum surfaces, neon rose focal points, and radiant amber micro-accents.*
+
+![Cyberpunk Sunset Theme](preview/theme_cyberpunk_sunset.png)
+</details>
 
 ---
 
-### 2. Live Team Activity Stream
+### 📱 Adaptive Navigation Layouts (Topbar vs. Left Sidebar)
+Switch seamlessly between a sleek floating topbar and an enterprise collapsible sidebar navigation.
+
+<div align="center">
+  <img src="preview/sidebar_layout_light.png" alt="Sidebar Layout - Light Mode" width="49%" />
+  <img src="preview/sidebar_layout_dark.png" alt="Sidebar Layout - Dark Mode" width="49%" />
+</div>
+
+---
+
+### ⚡ Real-Time Operations & Live Activity
 Instant, live-updating visibility into team member focus, active window foreground titles, online/idle/offline status, and live heartbeats.
 
-![Live Team Activity](preview/04_live_activity.png)
+<div align="center">
+  <img src="preview/04_live_activity.png" alt="Live Team Activity Light" width="49%" />
+  <img src="preview/16_dark_theme_live.png" alt="Live Team Activity Dark" width="49%" />
+</div>
 
 ---
 
-### 3. Application Categorization & Productivity Insights
-Track application utilization patterns categorized by productive, neutral, and distracting tools.
+### 📊 Deep Work & Productivity Analytics
+Track application utilization patterns categorized by productive, neutral, and distracting tools alongside automated attendance timesheets.
 
-![Application Usage](preview/06_applications.png)
-
----
-
-### 4. Attendance & Timesheets
-Automated daily clock-ins, punch-outs, total active time vs idle time, and historical presence reporting.
-
-![Attendance & Timesheets](preview/07_attendance.png)
+<div align="center">
+  <img src="preview/06_applications.png" alt="Application Usage Breakdown" width="49%" />
+  <img src="preview/07_attendance.png" alt="Attendance & Timesheets" width="49%" />
+</div>
 
 ---
 
-### 5. Multi-Theme Customization Engine
-Choose from 5 curated aesthetic palettes (Warm Cream, Obsidian Midnight, Nordic Frost, Emerald Forest, Cyberpunk Sunset) with instant dynamic theme switching.
-
-![Theme & Appearance Settings](preview/12_settings.png)
-
----
-
-### 6. Endpoint Devices & Agent Fleet Management
-Manage enrolled hardware endpoints, hardware specifications, agent versions, and one-click token revocation.
+### 🛡️ Fleet Management & Security Policies
+Manage enrolled endpoint hardware, agent telemetry health, data collection boundaries, and immutable RBAC audit logs.
 
 <div align="center">
   <img src="preview/08_devices.png" alt="Device Fleet Management" width="49%" />
   <img src="preview/09_agent_health.png" alt="Agent Telemetry Health" width="49%" />
 </div>
 
----
-
-### 7. Security Policies & Audit Trail
-Configure organization-wide data collection limits, privacy bounds, and inspect immutable RBAC audit logs.
-
 <div align="center">
   <img src="preview/10_policies.png" alt="Collection Policies" width="49%" />
   <img src="preview/11_audit_logs.png" alt="RBAC Audit Logs" width="49%" />
-</div>
-
----
-
-### 8. Onboarding & Authentication
-Frictionless organization onboarding and role-based authentication with automated credentials generation.
-
-<div align="center">
-  <img src="preview/01_welcome.png" alt="Welcome Landing Page" width="49%" />
-  <img src="preview/02_login.png" alt="Authentication Portal" width="49%" />
 </div>
 
 ---
