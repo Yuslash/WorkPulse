@@ -1,49 +1,30 @@
-# Python bytecode files
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Virtual environment folders
-venv/
-env/
-
-# Python distribution packages
-*.egg
-*.egg-info
-*.dist-info
-*.whl
-
-# IDE settings
-.vscode/
-.idea/
-
-# PyCharm specific
-.idea/
-
-# MacOS specific
-.DS_Store
-
-# Windows specific
-Thumbs.db
-
-# PyInstaller
+node_modules/
 dist/
 build/
-*.spec
+coverage/
+.turbo/
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
+.env
+.env.local
+.env.*.local
 
-# Qt Designer .ui files (optional if you're using .ui files in your project)
-*.ui
+# Rust
+agent/target/
+**/*.rs.bk
 
-# Log files
+# Playwright
+e2e/.report/
+e2e/.results/
+test-results/
+playwright-report/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Agent runtime data (never commit telemetry or secrets)
+agent-data/
+*.redb
 *.log
-
-# User-specific files
-*.swp
-*.swo
-
-# PyQt5 temporary files
-*.bak

@@ -1,0 +1,301 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * WorkPulse curated theme system:
+ * 1. Warm Cream (Signature Editorial Classic)
+ * 2. Obsidian Midnight (Cyber Luxury & High Contrast Dark)
+ * 3. Nordic Frost (Clean Modern Ice & Azure Light)
+ * 4. Emerald Forest (Velvet Botanical & Mint Dark)
+ * 5. Cyberpunk Sunset (Neon Violet & Radiant Amber Dark)
+ */
+@layer base {
+  :root,
+  [data-theme='warm-cream'] {
+    --bg: 233 231 226; /* #E9E7E2 */
+    --surface: 250 248 244; /* #FAF8F4 */
+    --elevated: 243 240 234; /* #F3F0EA */
+    --border: 231 226 217;
+    --border-strong: 217 210 197;
+    --fg: 28 26 23;
+    --muted: 147 140 130;
+    --faint: 171 165 153;
+    --accent: 240 135 92; /* coral #F0875C */
+    --accent-fg: 255 255 255;
+
+    --viz-1: 240 135 92;
+    --viz-2: 95 184 230;
+    --viz-3: 139 111 224;
+    --viz-4: 224 105 184;
+
+    --active: 63 166 94;
+    --idle: 224 168 62;
+    --locked: 138 127 113;
+    --offline: 214 83 75;
+
+    --danger: 214 83 75;
+    --warn: 224 168 62;
+    --success: 63 166 94;
+
+    --shadow-sm: 0 2px 8px -2px rgba(60, 52, 44, 0.10);
+    --shadow-md: 0 14px 34px -16px rgba(60, 52, 44, 0.20);
+    --shadow-app: 0 46px 90px -44px rgba(60, 52, 44, 0.32);
+
+    color-scheme: light;
+  }
+
+  [data-theme='obsidian-midnight'] {
+    --bg: 13 16 23; /* #0D1017 */
+    --surface: 21 27 38; /* #151B26 */
+    --elevated: 30 38 52; /* #1E2634 */
+    --border: 38 48 64; /* #263040 */
+    --border-strong: 55 69 92;
+    --fg: 243 245 249; /* #F3F5F9 */
+    --muted: 154 168 186;
+    --faint: 108 122 142;
+    --accent: 99 102 241; /* electric indigo #6366F1 */
+    --accent-fg: 255 255 255;
+
+    --viz-1: 99 102 241;
+    --viz-2: 56 189 248;
+    --viz-3: 168 85 247;
+    --viz-4: 236 72 153;
+
+    --active: 52 211 153;
+    --idle: 251 191 36;
+    --locked: 148 163 184;
+    --offline: 248 113 113;
+
+    --danger: 248 113 113;
+    --warn: 251 191 36;
+    --success: 52 211 153;
+
+    --shadow-sm: 0 2px 10px -2px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 16px 36px -12px rgba(0, 0, 0, 0.55);
+    --shadow-app: 0 46px 90px -40px rgba(0, 0, 0, 0.70);
+
+    color-scheme: dark;
+  }
+
+  [data-theme='nordic-frost'] {
+    --bg: 238 242 246; /* #EEF2F6 */
+    --surface: 255 255 255; /* #FFFFFF */
+    --elevated: 228 235 243; /* #E4EBF3 */
+    --border: 216 226 236;
+    --border-strong: 186 201 219;
+    --fg: 15 23 42; /* #0F172A */
+    --muted: 100 116 139;
+    --faint: 148 163 184;
+    --accent: 14 165 233; /* oceanic azure #0EA5E9 */
+    --accent-fg: 255 255 255;
+
+    --viz-1: 14 165 233;
+    --viz-2: 99 102 241;
+    --viz-3: 20 184 166;
+    --viz-4: 244 63 94;
+
+    --active: 16 185 129;
+    --idle: 245 158 11;
+    --locked: 148 163 184;
+    --offline: 239 68 68;
+
+    --danger: 239 68 68;
+    --warn: 245 158 11;
+    --success: 16 185 129;
+
+    --shadow-sm: 0 2px 8px -2px rgba(15, 23, 42, 0.08);
+    --shadow-md: 0 14px 34px -16px rgba(15, 23, 42, 0.15);
+    --shadow-app: 0 46px 90px -44px rgba(15, 23, 42, 0.22);
+
+    color-scheme: light;
+  }
+
+  [data-theme='emerald-forest'] {
+    --bg: 10 22 17; /* #0A1611 */
+    --surface: 17 36 28; /* #11241C */
+    --elevated: 25 49 39; /* #193127 */
+    --border: 34 65 52;
+    --border-strong: 49 92 74;
+    --fg: 236 253 245; /* #ECFDF5 */
+    --muted: 145 180 165;
+    --faint: 92 128 113;
+    --accent: 16 185 129; /* emerald mint #10B981 */
+    --accent-fg: 10 22 17;
+
+    --viz-1: 16 185 129;
+    --viz-2: 45 212 191;
+    --viz-3: 132 204 22;
+    --viz-4: 251 146 60;
+
+    --active: 52 211 153;
+    --idle: 251 191 36;
+    --locked: 110 148 133;
+    --offline: 248 113 113;
+
+    --danger: 248 113 113;
+    --warn: 251 191 36;
+    --success: 52 211 153;
+
+    --shadow-sm: 0 2px 10px -2px rgba(0, 0, 0, 0.50);
+    --shadow-md: 0 16px 36px -12px rgba(0, 0, 0, 0.60);
+    --shadow-app: 0 46px 90px -40px rgba(0, 0, 0, 0.75);
+
+    color-scheme: dark;
+  }
+
+  [data-theme='cyberpunk-sunset'] {
+    --bg: 18 13 26; /* #120D1A */
+    --surface: 28 20 40; /* #1C1428 */
+    --elevated: 41 30 58; /* #291E3A */
+    --border: 59 44 82;
+    --border-strong: 88 67 122;
+    --fg: 253 244 255; /* #FDF4FF */
+    --muted: 192 165 212;
+    --faint: 138 114 158;
+    --accent: 244 63 94; /* neon rose #F43F5E */
+    --accent-fg: 255 255 255;
+
+    --viz-1: 244 63 94;
+    --viz-2: 245 158 11;
+    --viz-3: 168 85 247;
+    --viz-4: 6 182 212;
+
+    --active: 52 211 153;
+    --idle: 251 191 36;
+    --locked: 156 138 176;
+    --offline: 244 63 94;
+
+    --danger: 244 63 94;
+    --warn: 245 158 11;
+    --success: 52 211 153;
+
+    --shadow-sm: 0 2px 10px -2px rgba(0, 0, 0, 0.55);
+    --shadow-md: 0 16px 36px -12px rgba(0, 0, 0, 0.65);
+    --shadow-app: 0 46px 90px -40px rgba(0, 0, 0, 0.80);
+
+    color-scheme: dark;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    /* Prevents the layout shifting horizontally when a page grows tall
+       enough to gain a scrollbar. */
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    font-weight: 500;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  /* Respect a user's reduced-motion preference; the dashboard animates. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Clean focus styles for interactive controls only */
+  button:focus-visible,
+  a:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgb(var(--bg)), 0 0 0 4px rgb(var(--accent));
+  }
+
+  input,
+  textarea,
+  select {
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  input:focus,
+  input:focus-visible,
+  textarea:focus,
+  textarea:focus-visible,
+  select:focus,
+  select:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    --tw-ring-shadow: none !important;
+    --tw-ring-offset-shadow: none !important;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border-strong;
+  }
+}
+
+/*
+ * Circular spreading theme reveal animation via View Transitions API
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Smooth background and text transition for theme changes */
+body {
+  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer components {
+  /* Cards carry no border — separation comes from the warm drop shadow, same
+     as the source design. */
+  .card {
+    @apply rounded-card bg-surface shadow-warm-sm overflow-hidden;
+  }
+
+  .label {
+    @apply text-[13px] font-semibold text-muted;
+  }
+
+  /* Numeric columns line up when digits are tabular. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+}

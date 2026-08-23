@@ -1,0 +1,43 @@
+{
+  "name": "workpulse",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WorkPulse - transparent employee activity tracking (agent + api + admin)",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/api",
+    "apps/admin",
+    "apps/tester"
+  ],
+  "scripts": {
+    "build:shared": "npm run build -w @workpulse/shared",
+    "dev": "concurrently -n api,admin -c cyan,magenta \"npm:dev:api\" \"npm:dev:admin\"",
+    "dev:api": "npm run dev -w @workpulse/api",
+    "dev:admin": "npm run dev -w @workpulse/admin",
+    "db:indexes": "npm run db:indexes -w @workpulse/api",
+    "db:reset": "npm run db:reset -w @workpulse/api --",
+    "seed": "npm run seed -w @workpulse/api",
+    "typecheck": "npm run typecheck -w @workpulse/shared && npm run typecheck -w @workpulse/api && npm run typecheck -w @workpulse/tester && npm run typecheck -w @workpulse/admin",
+    "test:api": "npm run test -w @workpulse/api",
+    "test:sim": "npm run test -w @workpulse/tester",
+    "test:rust": "node scripts/run-rust-tests.mjs",
+    "test:e2e": "playwright test -c e2e/playwright.config.ts",
+    "e2e:install": "playwright install chromium --with-deps",
+    "e2e:report": "playwright show-report e2e/.report",
+    "verify": "node scripts/verify.mjs",
+    "verify:fast": "node scripts/verify.mjs --fast",
+    "agent:build": "cargo build --release --manifest-path agent/Cargo.toml",
+    "agent:test": "cargo test --workspace --manifest-path agent/Cargo.toml"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.2",
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.7.2"
+  }
+}

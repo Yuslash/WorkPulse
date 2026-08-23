@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fitness Dashboard — Live Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --bg:#E9E7E2; --surface:#F3F0EA; --card:#FAF8F4; --primary:#F0875C; --hero-ink:#FFFFFF;
+  --text:#1C1A17; --text-muted:#938C82; --border:#E7E2D9; --shadow-rgb:60,52,44;
+  --viz-1:#F0875C; --viz-2:#5FB8E6; --viz-3:#8B6FE0; --viz-4:#E069B8;
+  --r-app:40px; --r-card:26px; --r-sub:18px; --r-chip:14px; --r-pill:999px;
+  --display:"Bricolage Grotesque",sans-serif; --body:"Plus Jakarta Sans",sans-serif;
+  --sh-sm:0 2px 8px -2px rgba(var(--shadow-rgb),.10);
+  --sh-md:0 12px 30px -14px rgba(var(--shadow-rgb),.16);
+  --sh-app:0 44px 90px -44px rgba(var(--shadow-rgb),.30);
+  --ease:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{ background:var(--bg); color:var(--text); font:500 15px/1.45 var(--body); -webkit-font-smoothing:antialiased; }
+.fd-app{ max-width:1380px; margin:26px auto; padding:26px; background:var(--surface); border-radius:var(--r-app); box-shadow:var(--sh-app); }
+.fd-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:18px; }
+.fd-main{ display:grid; grid-template-columns:1.28fr 1.12fr 1fr; gap:18px; align-items:start; }
+.fd-col{ display:flex; flex-direction:column; gap:18px; }
+.fd-mount{ animation:fdrise .55s var(--ease) both; }
+.fd-stats > *:nth-child(1){animation-delay:.02s;} .fd-stats > *:nth-child(2){animation-delay:.08s;}
+.fd-stats > *:nth-child(3){animation-delay:.14s;} .fd-stats > *:nth-child(4){animation-delay:.20s;}
+.fd-col:nth-child(1) .fd-mount{animation-delay:.18s;} .fd-col:nth-child(2) .fd-mount{animation-delay:.26s;} .fd-col:nth-child(3) .fd-mount{animation-delay:.34s;}
+.fd-draw{ transition:stroke-dashoffset 1.15s var(--ease); }
+@keyframes fdrise{ from{transform:translateY(16px);} to{transform:none;} }
+@keyframes fdfloat{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
+@keyframes fdgrow{ from{transform:scaleY(.05);} to{transform:scaleY(1);} }
+@keyframes fdfade{ from{opacity:0;} to{opacity:.55;} }
+.fd-bar{ transform-origin:bottom; animation:fdgrow .7s var(--ease) both; }
+.fd-tick{ transform-origin:center; animation:fdgrow .6s var(--ease) both; }
+.fd-nav-lk:hover{ color:var(--text)!important; }
+.fd-lift{ transition:transform .16s var(--ease), box-shadow .16s; }
+.fd-lift:hover{ transform:translateY(-2px); }
+.fd-press:active{ transform:translateY(1px)!important; }
+@media(max-width:1080px){ .fd-main{ grid-template-columns:1fr 1fr; } .fd-col:nth-child(3){ grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; } .fd-col:nth-child(3) > *{ flex:1 1 320px; } }
+@media(max-width:760px){
+  .fd-app{ margin:12px; padding:16px; border-radius:30px; }
+  .fd-stats{ grid-template-columns:1fr 1fr; }
+  .fd-main{ grid-template-columns:1fr; }
+  .fd-col:nth-child(3){ flex-direction:column; }
+  .fd-hide-sm{ display:none!important; }
+  .fd-topbar{ flex-wrap:wrap; }
+  .fd-greet{ flex-direction:column; align-items:flex-start!important; gap:18px!important; }
+}
+@media(max-width:440px){ .fd-stats{ grid-template-columns:1fr; } }
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none!important; transition:none!important; }
+  .fd-draw{ stroke-dashoffset:0!important; }
+}
+</style>
+</head>
+<body>
+
+<div class="fd-app">
+
+ <!-- TOP BAR -->
+ <div class="fd-topbar" style="display:flex;align-items:center;gap:16px;margin-bottom:26px;">
+ <div style="width:48px;height:48px;border-radius:999px;background:var(--primary);display:grid;place-items:center;color:var(--hero-ink);flex:0 0 auto;box-shadow:var(--sh-sm);">
+ <i data-lucide="flower-2" style="width:24px;height:24px;"></i>
+ </div>
+ <div style="display:flex;gap:4px;background:var(--card);padding:6px;border-radius:999px;box-shadow:var(--sh-sm);">
+ <a href="#" style="padding:11px 22px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;background:var(--primary);color:var(--hero-ink);">Home</a>
+ <a href="#" class="fd-nav-lk" style="padding:11px 20px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;color:var(--text-muted);transition:.2s;">Healthy Menu</a>
+ <a href="#" class="fd-nav-lk fd-hide-sm" style="padding:11px 20px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;color:var(--text-muted);transition:.2s;">Calendar</a>
+ <a href="#" class="fd-nav-lk fd-hide-sm" style="padding:11px 20px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;color:var(--text-muted);transition:.2s;">Progress</a>
+ <a href="#" class="fd-nav-lk fd-hide-sm" style="padding:11px 20px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;color:var(--text-muted);transition:.2s;">AI Chat</a>
+ </div>
+ <div class="fd-hide-sm" style="flex:1;display:flex;align-items:center;gap:10px;padding:13px 18px;background:var(--card);border-radius:999px;box-shadow:var(--sh-sm);">
+ <i data-lucide="search" style="width:18px;height:18px;color:var(--text-muted);"></i>
+ <input placeholder="Search here" style="border:0;background:transparent;outline:none;width:100%;font:inherit;color:var(--text);">
+ </div>
+ <button class="fd-lift" style="width:48px;height:48px;border-radius:999px;border:0;cursor:pointer;display:grid;place-items:center;background:var(--card);color:var(--text);box-shadow:var(--sh-sm);flex:0 0 auto;">
+ <i data-lucide="plus" style="width:22px;height:22px;"></i>
+ </button>
+ <div style="display:flex;align-items:center;gap:11px;flex:0 0 auto;">
+ <div style="width:46px;height:46px;border-radius:999px;background:linear-gradient(150deg,#caa,#866);display:grid;place-items:center;color:#fff;overflow:hidden;">
+ <i data-lucide="user" style="width:24px;height:24px;"></i>
+ </div>
+ <div style="line-height:1.2;">
+ <div style="font-weight:700;font-size:15px;">John D.</div>
+ <div style="font-size:13px;color:var(--text-muted);">Coach</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- GREETING -->
+ <div class="fd-greet" style="display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:26px;">
+ <div>
+ <div style="font-size:14px;color:var(--text-muted);font-weight:600;margin-bottom:8px;">Let's Rock today.</div>
+ <h1 style="font-family:var(--display);font-weight:800;font-size:clamp(30px,4.2vw,48px);line-height:1.02;letter-spacing:-.03em;display:flex;align-items:center;gap:14px;margin:0;">Welcome Back, John D. <i data-lucide="biceps-flexed" style="width:34px;height:34px;color:var(--primary);"></i></h1>
+ </div>
+ <div style="display:flex;align-items:center;gap:18px;flex:0 0 auto;">
+ <div style="display:flex;align-items:center;gap:14px;">
+ <div style="width:68px;height:68px;border-radius:999px;background:var(--card);box-shadow:var(--sh-sm);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:26px;">19</div>
+ <div style="font-size:15px;font-weight:600;line-height:1.3;">Tue,<br>December</div>
+ </div>
+ <div style="width:1px;height:48px;background:var(--border);"></div>
+ <button class="fd-lift fd-press" style="font:inherit;font-weight:700;cursor:pointer;border:0;padding:15px 30px;border-radius:999px;background:var(--primary);color:var(--hero-ink);box-shadow:var(--sh-md);">Show my Task</button>
+ <button class="fd-lift" style="width:54px;height:54px;border-radius:999px;border:0;cursor:pointer;display:grid;place-items:center;background:var(--card);color:var(--text);box-shadow:var(--sh-sm);">
+ <i data-lucide="calendar" style="width:22px;height:22px;"></i>
+ </button>
+ </div>
+ </div>
+
+ <!-- STAT ROW -->
+ <div class="fd-stats">
+ <!-- Weight HERO -->
+ <div class="fd-mount" style="background:var(--primary);color:var(--hero-ink);border-radius:26px;padding:22px;box-shadow:var(--sh-md);display:flex;flex-direction:column;gap:12px;min-height:148px;position:relative;overflow:hidden;">
+ <div style="display:flex;justify-content:space-between;align-items:center;">
+ <span style="font-size:14px;font-weight:600;color:rgba(255,255,255,.85);">Weight</span>
+ <div style="width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.2);">
+ <i data-lucide="trending-up" style="width:20px;height:20px;"></i>
+ </div>
+ </div>
+ <div style="font-family:var(--display);font-weight:800;font-size:34px;letter-spacing:-.02em;"><span data-count="72.5" data-dec="1">72.5</span>kg</div>
+ <svg viewBox="0 0 240 40" style="margin-top:auto;height:38px;width:100%;" preserveAspectRatio="none">
+ <path class="fd-draw" d="M0,28 C30,28 38,12 60,12 S92,30 120,28 S150,8 180,12 S214,28 240,22" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="3" stroke-linecap="round" stroke-dasharray="320" stroke-dashoffset="320"></path>
+ </svg>
+ </div>
+
+ <!-- Steps : bars -->
+ <div class="fd-mount" style="background:var(--card);border-radius:26px;padding:22px;box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:12px;min-height:148px;">
+ <div style="display:flex;justify-content:space-between;align-items:center;">
+ <span style="font-size:14px;font-weight:600;color:var(--text-muted);">Steps</span>
+ <div style="width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 6%,transparent);">
+ <i data-lucide="activity" style="width:20px;height:20px;"></i>
+ </div>
+ </div>
+ <div style="font-family:var(--display);font-weight:800;font-size:34px;letter-spacing:-.02em;"><span data-count="82641" data-comma="1">82,641</span></div>
+ <svg viewBox="0 0 240 40" style="margin-top:auto;height:38px;width:100%;">
+ <g>
+ <rect class="fd-bar" style="animation-delay:.30s" x="6"   y="26" width="20" height="14" rx="5" fill="color-mix(in srgb,var(--text) 12%,transparent)"></rect>
+ <rect class="fd-bar" style="animation-delay:.36s" x="36"  y="22" width="20" height="18" rx="5" fill="color-mix(in srgb,var(--text) 12%,transparent)"></rect>
+ <rect class="fd-bar" style="animation-delay:.42s" x="66"  y="14" width="20" height="26" rx="5" fill="color-mix(in srgb,var(--text) 14%,transparent)"></rect>
+ <rect class="fd-bar" style="animation-delay:.48s" x="96"  y="4"  width="20" height="36" rx="5" fill="var(--primary)"></rect>
+ <rect class="fd-bar" style="animation-delay:.54s" x="126" y="10" width="20" height="30" rx="5" fill="var(--primary)"></rect>
+ <rect class="fd-bar" style="animation-delay:.60s" x="156" y="20" width="20" height="20" rx="5" fill="color-mix(in srgb,var(--text) 14%,transparent)"></rect>
+ <rect class="fd-bar" style="animation-delay:.66s" x="186" y="26" width="20" height="14" rx="5" fill="color-mix(in srgb,var(--text) 12%,transparent)"></rect>
+ <rect class="fd-bar" style="animation-delay:.72s" x="216" y="30" width="18" height="10" rx="5" fill="color-mix(in srgb,var(--text) 10%,transparent)"></rect>
+ </g>
+ </svg>
+ </div>
+
+ <!-- Sleep : ticks -->
+ <div class="fd-mount" style="background:var(--card);border-radius:26px;padding:22px;box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:12px;min-height:148px;">
+ <div style="display:flex;justify-content:space-between;align-items:center;">
+ <span style="font-size:14px;font-weight:600;color:var(--text-muted);">Sleep</span>
+ <div style="width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 6%,transparent);">
+ <i data-lucide="moon" style="width:20px;height:20px;"></i>
+ </div>
+ </div>
+ <div style="font-family:var(--display);font-weight:800;font-size:34px;letter-spacing:-.02em;">5h 36m</div>
+ <svg viewBox="0 0 240 40" style="margin-top:auto;height:38px;width:100%;" id="fd-sleep"></svg>
+ </div>
+
+ <!-- Water : wavefill -->
+ <div class="fd-mount" style="background:var(--card);border-radius:26px;padding:22px;box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:12px;min-height:148px;overflow:hidden;">
+ <div style="display:flex;justify-content:space-between;align-items:center;">
+ <span style="font-size:14px;font-weight:600;color:var(--text-muted);">Water Intake</span>
+ <div style="width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 6%,transparent);">
+ <i data-lucide="droplet" style="width:20px;height:20px;"></i>
+ </div>
+ </div>
+ <div style="font-family:var(--display);font-weight:800;font-size:34px;letter-spacing:-.02em;"><span data-count="1.8" data-dec="1">1.8</span>L</div>
+ <svg viewBox="0 0 240 40" style="margin-top:auto;height:38px;width:100%;" preserveAspectRatio="none">
+ <path d="M0,22 C30,12 50,12 80,20 S130,32 160,22 S210,10 240,18 L240,40 L0,40 Z" fill="color-mix(in srgb,var(--primary) 22%,transparent)"></path>
+ <path class="fd-draw" d="M0,22 C30,12 50,12 80,20 S130,32 160,22 S210,10 240,18" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="300"></path>
+ </svg>
+ </div>
+ </div>
+
+ <!-- MAIN GRID -->
+ <div class="fd-main">
+
+ <!-- LEFT COLUMN -->
+ <div class="fd-col">
+
+ <!-- Daily Inputs -->
+ <div class="fd-mount" style="background:var(--card);border-radius:26px;padding:24px;box-shadow:var(--sh-sm);">
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+ <h2 style="font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em;margin:0;">Daily Inputs</h2>
+ <button class="fd-lift" style="width:40px;height:40px;border-radius:999px;border:0;cursor:pointer;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--text);"><i data-lucide="more-horizontal" style="width:20px;height:20px;"></i></button>
+ </div>
+ <div style="display:grid;grid-template-columns:0.9fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+ <button class="fd-lift" style="border:2px dashed var(--border);background:transparent;border-radius:18px;cursor:pointer;display:grid;place-items:center;min-height:118px;color:var(--text-muted);"><i data-lucide="plus" style="width:26px;height:26px;"></i></button>
+ <div style="background:var(--surface);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px;">
+ <i data-lucide="droplets" style="width:22px;height:22px;color:var(--viz-2);"></i>
+ <span style="font-size:13px;color:var(--text-muted);font-weight:600;margin-top:4px;">Saturation</span>
+ <div style="font-family:var(--display);font-weight:800;font-size:24px;">98<small style="font-size:13px;font-weight:600;color:var(--text-muted);">%</small></div>
+ <span style="font-size:11px;color:var(--text-muted);">Mmol/L 14:00</span>
+ </div>
+ <div style="background:var(--surface);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px;">
+ <i data-lucide="heart-pulse" style="width:22px;height:22px;color:var(--viz-3);"></i>
+ <span style="font-size:13px;color:var(--text-muted);font-weight:600;margin-top:4px;">Pressure</span>
+ <div style="font-family:var(--display);font-weight:800;font-size:24px;">140/70</div>
+ <span style="font-size:11px;"><span style="color:var(--primary);font-weight:700;">120/60</span> <span style="color:var(--text-muted);">14:00</span></span>
+ </div>
+ </div>
+ <!-- Calories segbar -->
+ <div style="background:var(--surface);border-radius:18px;padding:16px;">
+ <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+ <div style="width:38px;height:38px;border-radius:999px;background:var(--card);display:grid;place-items:center;box-shadow:var(--sh-sm);"><i data-lucide="flame" style="width:20px;height:20px;color:var(--primary);"></i></div>
+ <span style="font-weight:700;font-size:15px;">Calories</span>
+ <div style="margin-left:auto;font-family:var(--display);font-weight:800;font-size:22px;"><span data-count="1540" data-comma="1">1540</span><small style="font-size:13px;color:var(--text-muted);font-weight:600;">Kkal</small></div>
+ </div>
+ <div id="fd-segbar" style="display:flex;gap:5px;"></div>
+ </div>
+ <!-- Plan activity -->
+ <div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0 14px;">
+ <h3 style="font-family:var(--display);font-weight:700;font-size:17px;margin:0;">Today's Plan Activity</h3>
+ <div style="display:flex;gap:8px;color:var(--text-muted);"><i data-lucide="hourglass" style="width:20px;height:20px;"></i><i data-lucide="more-horizontal" style="width:20px;height:20px;"></i></div>
+ </div>
+ <div style="display:flex;align-items:center;gap:14px;">
+ <div style="width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#d9cfc4,#b9ab9c);flex:0 0 auto;display:grid;place-items:center;color:#fff;"><i data-lucide="dumbbell" style="width:24px;height:24px;"></i></div>
+ <div style="flex:1;">
+ <div style="font-weight:700;font-size:16px;margin-bottom:5px;">Bench press</div>
+ <div style="display:flex;gap:14px;font-size:12px;color:var(--text-muted);font-weight:600;flex-wrap:wrap;">
+ <span style="display:flex;align-items:center;gap:5px;"><i data-lucide="timer" style="width:14px;height:14px;"></i>3:00</span>
+ <span style="display:flex;align-items:center;gap:5px;"><i data-lucide="layers" style="width:14px;height:14px;"></i>3 Sets</span>
+ <span style="display:flex;align-items:center;gap:5px;"><i data-lucide="repeat" style="width:14px;height:14px;"></i>8 Reps</span>
+ </div>
+ <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--primary);font-weight:700;margin-top:6px;"><i data-lucide="dumbbell" style="width:14px;height:14px;"></i>Barbells</div>
+ </div>
+ <button class="fd-lift fd-press" style="font:inherit;font-weight:700;cursor:pointer;border:0;padding:12px 28px;border-radius:999px;background:var(--primary);color:var(--hero-ink);box-shadow:var(--sh-md);">STOP</button>
+ </div>
+ </div>
+
+ <!-- Home Workout -->
+ <div class="fd-mount" style="background:var(--card);border-radius:26px;padding:24px;box-shadow:var(--sh-sm);position:relative;overflow:hidden;min-height:180px;">
+ <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+ <h2 style="font-family:var(--display);font-weight:800;font-size:30px;line-height:1.05;letter-spacing:-.02em;max-width:62%;margin:0;">Your Home Workout Starts Here!</h2>
+ <button class="fd-lift" style="width:48px;height:48px;border-radius:999px;border:0;cursor:pointer;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--text);flex:0 0 auto;"><i data-lucide="arrow-up-right" style="width:22px;height:22px;"></i></button>
+ </div>
+ <div style="font-size:13px;color:var(--text-muted);font-weight:600;margin-top:54px;">Join program with:</div>
+ <div style="display:flex;margin-top:10px;">
+ <div style="width:34px;height:34px;border-radius:999px;background:linear-gradient(135deg,#e7b,#a59);border:2px solid var(--card);"></div>
+ <div style="width:34px;height:34px;border-radius:999px;background:linear-gradient(135deg,#7be,#359);border:2px solid var(--card);margin-left:-10px;"></div>
+ <div style="width:34px;height:34px;border-radius:999px;background:linear-gradient(135deg,#eb7,#a73);border:2px solid var(--card);margin-left:-10px;"></div>
+ <div style="width:34px;height:34px;border-radius:999px;background:var(--surface);border:2px solid var(--card);margin-left:-10px;display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--text-muted);">+9</div>
+ </div>
+ <div style="position:absolute;right:-10px;bottom:-10px;width:190px;height:150px;border-radius:20px;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--primary) 16%,transparent) 0 10px,transparent 10px 20px);display:grid;place-items:center;color:var(--text-muted);" class="fd-hide-sm">
+ <span style="font-family:monospace;font-size:11px;">workout photo</span>
+ </div>
+ </div>
+ </div>
+
+ <!-- CENTER COLUMN -->
+ <div class="fd-col">
+
+ <!-- Nutrition -->
+ <div class="fd-mount" style="background:var(--card);border-radius:26px;padding:24px;box-shadow:var(--sh-sm);">
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+ <h2 style="font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em;margin:0;">Nutrition</h2>
+ <button class="fd-lift" style="width:40px;height:40px;border-radius:999px;border:0;cursor:pointer;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--text);"><i data-lucide="more-horizontal" style="width:20px;height:20px;"></i></button>
+ </div>
+ <!-- Weekday selector -->
+ <div style="display:flex;justify-content:space-between;gap:6px;margin-bottom:22px;" id="fd-days"></div>
+ <!-- Donut + legend -->
+ <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+ <div style="position:relative;width:188px;height:188px;flex:0 0 auto;margin:0 auto;">
+ <svg viewBox="0 0 200 200" style="width:188px;height:188px;filter:drop-shadow(0 8px 14px rgba(var(--shadow-rgb),.16));">
+ <circle cx="100" cy="100" r="80" fill="none" stroke="color-mix(in srgb,var(--text) 7%,transparent)" stroke-width="15"></circle>
+ <circle class="fd-draw fd-arc" data-arc="151" cx="100" cy="100" r="80" fill="none" stroke="var(--viz-1)" stroke-width="15" stroke-linecap="round" stroke-dasharray="151 502" stroke-dashoffset="151" style="transform-box:fill-box;transform-origin:center;transform:rotate(-72deg);"></circle>
+ <circle class="fd-draw fd-arc" data-arc="120" cx="100" cy="100" r="80" fill="none" stroke="var(--viz-3)" stroke-width="15" stroke-linecap="round" stroke-dasharray="120 502" stroke-dashoffset="120" style="transform-box:fill-box;transform-origin:center;transform:rotate(150deg);"></circle>
+ <circle class="fd-draw fd-arc" data-arc="90" cx="100" cy="100" r="80" fill="none" stroke="var(--viz-2)" stroke-width="15" stroke-linecap="round" stroke-dasharray="90 502" stroke-dashoffset="90" style="transform-box:fill-box;transform-origin:center;transform:rotate(64deg);"></circle>
+ </svg>
+ <div style="position:absolute;left:50%;top:14px;transform:translateX(-50%);background:var(--viz-3);color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;box-shadow:var(--sh-sm);">Day 12</div>
+ <div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center;">
+ <div>
+ <div style="display:flex;align-items:center;gap:8px;justify-content:center;"><i data-lucide="apple" style="width:24px;height:24px;color:var(--primary);"></i><span style="font-family:var(--display);font-weight:800;font-size:36px;" data-count="764" data-comma="1">764</span></div>
+ <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">1500 Kcal</div>
+ </div>
+ </div>
+ </div>
+ <div style="flex:1;min-width:150px;display:flex;flex-direction:column;gap:16px;">
+ <div>
+ <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;"><span style="color:var(--viz-1);font-weight:700;">Carbs</span><span style="font-weight:700;">80/174g</span></div>
+ <div style="height:7px;border-radius:999px;background:color-mix(in srgb,var(--text) 7%,transparent);overflow:hidden;"><div class="fd-meter" data-pct="46" style="height:100%;width:0;border-radius:999px;background:var(--viz-1);transition:width 1s var(--ease);"></div></div>
+ </div>
+ <div>
+ <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;"><span style="color:var(--viz-2);font-weight:700;">Proteins</span><span style="font-weight:700;">68/158g</span></div>
+ <div style="height:7px;border-radius:999px;background:color-mix(in srgb,var(--text) 7%,transparent);overflow:hidden;"><div class="fd-meter" data-pct="43" style="height:100%;width:0;border-radius:999px;background:var(--viz-2);transition:width 1s var(--ease);"></div></div>
+ </div>
+ <div>
+ <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;"><span style="color:var(--viz-3);font-weight:700;">Fats</span><span style="font-weight:700;">10/83g</span></div>
+ <div style="height:7px;border-radius:999px;background:color-mix(in srgb,var(--text) 7%,transparent);overflow:hidden;"><div class="fd-meter" data-pct="12" style="height:100%;width:0;border-radius:999px;background:var(--viz-3);transition:width 1s var(--ease);"></div></div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Nutrients Gained -->
+ <div class="fd-mount" style="background:var(--card);border-radius:26px;padding:24px;box-shadow:var(--sh-sm);">
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+ <h2 style="font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em;margin:0;">Nutrients Gained</h2>
+ <button class="fd-lift" style="width:40px;height:40px;border-radius:999px;border:0;cursor:pointer;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--text);"><i data-lucide="plus" style="width:20px;height:20px;"></i></button>
+ </div>
+ <div style="display:flex;gap:30px;">
+ <div>
+ <div style="font-size:13px;color:var(--text-muted);font-weight:600;margin-bottom:6px;">Total Calories</div>
+ <div style="font-family:var(--display);font-weight:800;font-size:28px;">12.800 <small style="font-size:14px;color:var(--text-muted);font-weight:600;">kcal</small></div>
+ </div>
+ <div style="width:1px;background:var(--border);"></div>
+ <div>
+ <div style="font-size:13px;color:var(--text-muted);font-weight:600;margin-bottom:6px;">Daily Avg.</div>
+ <div style="font-family:var(--display);font-weight:800;font-size:28px;">1.750 <small style="font-size:14px;color:var(--text-muted);font-weight:600;">kcal</small></div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- RIGHT COLUMN -->
+ <div class="fd-col">
+
+ <!-- AI Assistant -->
+ <div class="fd-mount" style="background:var(--card);border-radius:26px;padding:24px;box-shadow:var(--sh-sm);">
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+ <h2 style="font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;margin:0;"><i data-lucide="sparkles" style="width:20px;height:20px;color:var(--primary);"></i>AI Assistant</h2>
+ <button class="fd-lift" style="width:40px;height:40px;border-radius:999px;border:0;cursor:pointer;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--text);"><i data-lucide="more-horizontal" style="width:20px;height:20px;"></i></button>
+ </div>
+ <div style="display:grid;place-items:center;margin:14px 0;">
+ <div style="width:118px;height:118px;border-radius:999px;animation:fdfloat 4s ease-in-out infinite;background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.55),transparent 38%),radial-gradient(circle at 70% 75%,rgba(var(--shadow-rgb),.5),transparent 50%),linear-gradient(150deg,#f2a07c,var(--primary));box-shadow:0 24px 44px -16px rgba(var(--shadow-rgb),.45);"></div>
+ </div>
+ <div style="text-align:center;margin-bottom:18px;">
+ <div style="color:var(--text-muted);font-size:15px;">Hi, John</div>
+ <div style="font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:-.02em;">How can I help you?</div>
+ </div>
+ <div style="display:flex;gap:8px;margin-bottom:14px;">
+ <button class="fd-lift" style="flex:1;background:var(--surface);border:0;border-radius:14px;box-shadow:var(--sh-sm);padding:12px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;"><i data-lucide="utensils" style="width:18px;height:18px;color:var(--viz-1);"></i><span style="font-size:11px;font-weight:600;color:var(--text-muted);text-align:center;">Generate Meal Plan</span></button>
+ <button class="fd-lift" style="flex:1;background:var(--surface);border:0;border-radius:14px;box-shadow:var(--sh-sm);padding:12px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;"><i data-lucide="dumbbell" style="width:18px;height:18px;color:var(--viz-2);"></i><span style="font-size:11px;font-weight:600;color:var(--text-muted);text-align:center;">Fitness Guidance</span></button>
+ <button class="fd-lift" style="flex:1;background:var(--surface);border:0;border-radius:14px;box-shadow:var(--sh-sm);padding:12px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;"><i data-lucide="line-chart" style="width:18px;height:18px;color:var(--viz-3);"></i><span style="font-size:11px;font-weight:600;color:var(--text-muted);text-align:center;">Analyze Progress</span></button>
+ </div>
+ <div style="display:flex;align-items:center;gap:10px;padding:8px 8px 8px 18px;background:var(--surface);border-radius:999px;box-shadow:var(--sh-sm);">
+ <input placeholder="Ask something.." style="border:0;background:transparent;outline:none;width:100%;font:inherit;color:var(--text);">
+ <button class="fd-lift fd-press" style="width:42px;height:42px;border-radius:999px;border:0;cursor:pointer;display:grid;place-items:center;background:var(--primary);color:var(--hero-ink);flex:0 0 auto;box-shadow:var(--sh-sm);"><i data-lucide="send" style="width:18px;height:18px;"></i></button>
+ </div>
+ </div>
+
+ <!-- Daily Meal -->
+ <div class="fd-mount" style="background:var(--card);border-radius:26px;padding:24px;box-shadow:var(--sh-sm);">
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+ <h2 style="font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em;margin:0;">Daily Meal</h2>
+ <button class="fd-lift" style="width:40px;height:40px;border-radius:999px;border:0;cursor:pointer;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--text);"><i data-lucide="plus" style="width:20px;height:20px;"></i></button>
+ </div>
+ <div style="background:var(--surface);border-radius:18px;padding:16px;">
+ <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+ <div style="width:24px;height:24px;border-radius:8px;background:var(--primary);display:grid;place-items:center;color:#fff;flex:0 0 auto;"><i data-lucide="check" style="width:16px;height:16px;"></i></div>
+ <span style="font-weight:700;font-size:15px;">Breakfast</span>
+ <div style="margin-left:auto;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:color-mix(in srgb,var(--viz-1) 16%,var(--card));"><i data-lucide="flame" style="width:13px;height:13px;color:var(--primary);"></i>300 kcal</div>
+ </div>
+ <div style="display:flex;align-items:center;gap:12px;">
+ <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#e8c98f,#cda35e);flex:0 0 auto;display:grid;place-items:center;color:#fff;"><i data-lucide="egg" style="width:22px;height:22px;"></i></div>
+ <div>
+ <div style="font-weight:600;font-size:14px;">Scrambled Eggs with Spinach</div>
+ <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">2 eggs · 1 cup spinach · olive oil</div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+
+<script>
+(function(){
+  function mount(){
+    var root = document;
+    // weekday selector
+    var days = [
+      {d:'Sun',n:21}, {d:'Mon',n:22}, {d:'Tue',n:23,ring:'var(--viz-1)'},
+      {d:'Wed',n:24}, {d:'Thu',n:25,ring:'var(--viz-3)'}, {d:'Fri',n:26},
+      {d:'Sat',n:27,ring:'var(--viz-2)'}
+    ];
+    var dwrap = root.querySelector('#fd-days');
+    if(dwrap){
+      dwrap.innerHTML = days.map(function(o){
+        var ring = o.ring
+          ? '<svg viewBox="0 0 48 48" style="position:absolute;inset:0;transform:rotate(-90deg);"><circle cx="24" cy="24" r="21" fill="none" stroke="'+o.ring+'" stroke-width="3" stroke-linecap="round" stroke-dasharray="'+(0.7*2*Math.PI*21)+' '+(2*Math.PI*21)+'"></circle></svg>'
+          : '';
+        var scale = o.ring ? 'transform:scale(1.05);' : '';
+        return '<div style="display:flex;flex-direction:column;align-items:center;gap:9px;">'+
+          '<span style="font-size:12px;color:var(--text-muted);font-weight:600;">'+o.d+'</span>'+
+          '<div style="position:relative;width:46px;height:46px;border-radius:999px;display:grid;place-items:center;font-weight:700;font-size:15px;background:var(--surface);box-shadow:var(--sh-sm);'+scale+'">'+ring+'<span style="position:relative;">'+o.n+'</span></div>'+
+        '</div>';
+      }).join('');
+    }
+    // sleep ticks
+    var sleep = root.querySelector('#fd-sleep');
+    if(sleep){
+      var hs = [10,18,8,26,14,30,12,22,16,28,10,20,14,24,8,18,12,26,16,10,20,14];
+      sleep.innerHTML = hs.map(function(h,i){
+        var x = 6 + i*10.5;
+        var y = 20 - h/2;
+        var col = (i>=8 && i<=14) ? 'var(--primary)' : 'color-mix(in srgb,var(--text) 16%,transparent)';
+        return '<rect class="fd-tick" style="animation-delay:'+(0.3+i*0.025)+'s" x="'+x+'" y="'+y+'" width="3" height="'+h+'" rx="1.5" fill="'+col+'"></rect>';
+      }).join('');
+    }
+    // calories segbar
+    var seg = root.querySelector('#fd-segbar');
+    if(seg){
+      var total = 26, on = 18;
+      var html = '';
+      for(var i=0;i<total;i++){
+        var col = i<on ? 'var(--primary)' : 'color-mix(in srgb,var(--text) 9%,transparent)';
+        html += '<i style="flex:1;height:14px;border-radius:5px;background:'+col+';opacity:'+(i<on?0:1)+';transition:opacity .4s var(--ease) '+(i*0.03)+'s;"></i>';
+      }
+      seg.innerHTML = html;
+      requestAnimationFrame(function(){ seg.querySelectorAll('i').forEach(function(e){ e.style.opacity='1'; }); });
+    }
+    // icons
+    var drawIcons = function(){ if(window.lucide) window.lucide.createIcons(); };
+    drawIcons(); setTimeout(drawIcons, 300); setTimeout(drawIcons, 900);
+    // draw-in donut arcs + water/weight sparklines + meters
+    requestAnimationFrame(function(){
+      root.querySelectorAll('.fd-draw').forEach(function(el){ el.style.strokeDashoffset = '0'; });
+      root.querySelectorAll('.fd-meter').forEach(function(el){ el.style.width = (el.dataset.pct||0)+'%'; });
+    });
+    // count-up
+    root.querySelectorAll('[data-count]').forEach(function(el){
+      var target = parseFloat(el.dataset.count);
+      var dec = parseInt(el.dataset.dec||'0');
+      var comma = el.dataset.comma === '1';
+      var dur = 1100; var start = performance.now();
+      var fmt = function(v){
+        var s = dec>0 ? v.toFixed(dec) : Math.round(v).toString();
+        if(comma) s = Number(s).toLocaleString('en-US', dec>0?{minimumFractionDigits:dec}:{});
+        return s;
+      };
+      var tick = function(now){
+        var p = Math.min(1,(now-start)/dur);
+        var e = 1-Math.pow(1-p,3);
+        el.textContent = fmt(target*e);
+        if(p<1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+  if(document.readyState !== 'loading') mount();
+  else document.addEventListener('DOMContentLoaded', mount);
+})();
+</script>
+</body>
+</html>
