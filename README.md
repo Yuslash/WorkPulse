@@ -16,6 +16,13 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?style=flat-square&logo=playwright&logoColor=white)](https://playwright.dev/)
 
+<br />
+<br />
+
+### Theme & Layout Animation Preview
+
+<img src="preview/theme_layout_change_animations.gif" alt="Theme and Layout Animation Preview" width="100%" />
+
 </div>
 
 ---
