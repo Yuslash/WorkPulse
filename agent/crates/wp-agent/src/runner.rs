@@ -58,6 +58,7 @@ pub struct Runner {
     state: StateMachine,
     sessionizer: Sessionizer,
     backoff: Backoff,
+    shift: Option<String>,
     status_tx: watch::Sender<AgentStatus>,
 }
 
@@ -84,10 +85,15 @@ impl Runner {
                 sessionizer: Sessionizer::new(config.track_window_titles),
                 config,
                 backoff: Backoff::default(),
+                shift: None,
                 status_tx,
             },
             status_rx,
         ))
+    }
+
+    pub fn set_shift(&mut self, shift: String) {
+        self.shift = Some(shift);
     }
 
     /// Runs until `shutdown` fires. Returns Ok(()) on a clean stop, and Err
@@ -121,6 +127,11 @@ impl Runner {
         config_tick.tick().await;
 
         loop {
+            if !self.is_within_shift() {
+                println!("Outside of selected shift bounds. Stopping telemetry.");
+                break;
+            }
+
             tokio::select! {
                 _ = shutdown.changed() => {
                     if *shutdown.borrow() {
@@ -150,6 +161,18 @@ impl Runner {
 
         self.shutdown().await;
         Ok(())
+    }
+
+    fn is_within_shift(&self) -> bool {
+        let Some(shift) = &self.shift else { return true };
+        let hour = chrono::Local::now().format("%H").to_string().parse::<u32>().unwrap_or(0);
+        
+        match shift.as_str() {
+            "DAY_SHIFT" => hour >= 9 && hour < 16,
+            "NIGHT_SHIFT" => hour >= 16,
+            "MIDNIGHT_SHIFT" => hour < 9,
+            _ => true,
+        }
     }
 
     /// Observes the machine and folds the result into the state machine and
@@ -195,6 +218,7 @@ impl Runner {
                 .sessionizer
                 .current()
                 .map(|window| window.app_name.clone()),
+            current_shift: self.shift.clone(),
             agent_version: AGENT_VERSION.to_string(),
             queue_depth: self.queue.len().ok().map(|n| n as u32),
             sent_at: Utc::now(),

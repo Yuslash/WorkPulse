@@ -22,6 +22,7 @@ import {
   ShieldCheck,
   Users2,
   X,
+  Download,
 } from 'lucide-react';
 import { Role } from '@workpulse/shared';
 import { useAuth } from '@/lib/auth';
@@ -53,6 +54,7 @@ const MORE_NAV: NavItem[] = [
   { to: '/agent-health', label: 'Agent Health', icon: ShieldCheck },
   { to: '/policies', label: 'Policies', icon: FileClock },
   { to: '/audit', label: 'Audit Logs', icon: ScrollText, minRole: Role.HrAdmin },
+  { to: '/client-downloads', label: 'Client Downloads', icon: Download },
   { to: '/settings', label: 'Settings', icon: Settings },
 ];
 

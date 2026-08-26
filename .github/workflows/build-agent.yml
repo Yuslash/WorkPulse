@@ -1,0 +1,40 @@
+name: Build Agent
+
+on:
+  push:
+    branches:
+      - v2
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Rust Agent
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.82
+          targets: x86_64-pc-windows-msvc
+
+      - name: Build Agent (Release)
+        run: cargo build --release --manifest-path agent/Cargo.toml
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WorkPulseAgent-Windows
+          path: agent/target/release/wp-agent.exe
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: agent/target/release/wp-agent.exe
+          body_path: agent/CHANGELOG.md

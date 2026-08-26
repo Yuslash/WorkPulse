@@ -19,6 +19,7 @@ import { AgentHealthPage } from '@/pages/AgentHealthPage';
 import { PoliciesPage } from '@/pages/PoliciesPage';
 import { AuditLogsPage } from '@/pages/AuditLogsPage';
 import { SettingsPage } from '@/pages/SettingsPage';
+import { ClientDownloadsPage } from '@/pages/ClientDownloadsPage';
 
 /**
  * Routes are guarded twice: here for navigation, and again on the server for
@@ -93,6 +94,7 @@ export function App() {
             </RequireRole>
           }
         />
+        <Route path="/client-downloads" element={<ClientDownloadsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
 

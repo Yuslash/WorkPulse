@@ -104,11 +104,11 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
           ))}
         </div>
 
-        <div className="relative mt-1 h-12 overflow-hidden rounded-sub bg-elevated">
+        <div className="relative mt-1 h-14 overflow-hidden rounded-2xl bg-elevated/80 border border-border/80 shadow-warm-sm">
           {hourMarks.map((mark) => (
             <span
               key={`line-${mark.label}`}
-              className="absolute top-0 h-full w-px bg-border"
+              className="absolute top-0 h-full w-px bg-border/60"
               style={{ left: `${mark.leftPct}%` }}
               aria-hidden
             />
@@ -119,7 +119,7 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
               key={`${entry.startedAt}-${index}`}
               type="button"
               className={cn(
-                'absolute top-0 h-full transition-opacity hover:opacity-80',
+                'absolute top-0 h-full transition-opacity hover:brightness-110 cursor-pointer',
                 KIND_COLORS[entry.kind],
                 entry.kind !== 'app' && 'opacity-70',
               )}
@@ -134,27 +134,29 @@ export function Timeline({ entries }: { entries: TimelineEntry[] }) {
         </div>
 
         {/* A fixed-height slot so hovering does not shift the layout. */}
-        <div className="mt-2 h-8">
+        <div className="mt-2.5 min-h-[36px]">
           {hovered ? (
-            <div className="animate-fade-in rounded-sub bg-surface px-4 py-2 text-sm shadow-warm-sm">
-              <span className="font-semibold">{hovered.label}</span>
-              <span className="ml-2 text-muted">
-                {formatTime(hovered.startedAt)} – {formatTime(hovered.endedAt)}
-              </span>
-              <span className="ml-2 tabular text-faint">{formatDuration(hovered.durationSec)}</span>
+            <div className="animate-fade-in rounded-xl bg-surface px-4 py-2 text-xs font-semibold shadow-warm-sm border border-border/80 flex items-center justify-between">
+              <span className="font-bold text-fg">{hovered.label}</span>
+              <div className="flex items-center gap-3">
+                <span className="text-muted font-mono">
+                  {formatTime(hovered.startedAt)} – {formatTime(hovered.endedAt)}
+                </span>
+                <span className="tabular font-bold text-accent font-mono">{formatDuration(hovered.durationSec)}</span>
+              </div>
             </div>
           ) : (
-            <p className="px-1 py-1.5 text-2xs text-faint">
-              Hover a block for details. {entries.length} spans recorded.
+            <p className="px-1 py-1 text-2xs text-muted font-medium">
+              Hover over any timeline segment for continuous window details. ({entries.length} spans recorded)
             </p>
           )}
         </div>
       </div>
 
-      <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
+      <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1.5 pt-2 border-t border-border/40">
         {(Object.keys(KIND_LABELS) as Array<TimelineEntry['kind']>).map((kind) => (
-          <span key={kind} className="flex items-center gap-1.5 text-2xs text-muted">
-            <span className={cn('h-2 w-2 rounded-sm', KIND_COLORS[kind])} aria-hidden />
+          <span key={kind} className="flex items-center gap-1.5 text-2xs font-semibold text-muted">
+            <span className={cn('h-2 w-2 rounded-full', KIND_COLORS[kind])} aria-hidden />
             {KIND_LABELS[kind]}
           </span>
         ))}

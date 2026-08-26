@@ -5,7 +5,8 @@ export type ThemeId =
   | 'obsidian-midnight'
   | 'nordic-frost'
   | 'emerald-forest'
-  | 'cyberpunk-sunset';
+  | 'cyberpunk-sunset'
+  | 'azure-pulse';
 
 export interface ThemeDefinition {
   id: ThemeId;
@@ -30,6 +31,28 @@ export interface ThemeDefinition {
 }
 
 export const THEMES: ThemeDefinition[] = [
+  {
+    id: 'azure-pulse',
+    name: 'Azure Pulse',
+    tagline: 'Modern High-Precision Blue',
+    mode: 'light',
+    accentColor: '#256EFF',
+    surfaceColor: '#FFFFFF',
+    bgColor: '#E8ECF2',
+    fgColor: '#1A1A1A',
+    previewPalette: {
+      bg: '#E8ECF2',
+      surface: '#FFFFFF',
+      elevated: '#DFE5EE',
+      accent: '#256EFF',
+      accentFg: '#FFFFFF',
+      text: '#1A1A1A',
+      muted: '#6B7280',
+      active: '#16A34A',
+    },
+    description:
+      'High-precision SaaS light theme with crisp porcelain cards, refined graphite canvas depth, and electric brand blue accents.',
+  },
   {
     id: 'warm-cream',
     name: 'Warm Cream',
@@ -167,7 +190,7 @@ function getInitialTheme(): ThemeId {
   } catch {
     // fallback
   }
-  return 'warm-cream';
+  return 'azure-pulse';
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {

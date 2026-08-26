@@ -502,3 +502,13 @@ export function Modal({
     </div>
   );
 }
+
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
+export {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+  type ChartConfig,
+} from './chart';

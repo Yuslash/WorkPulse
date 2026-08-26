@@ -153,6 +153,7 @@ pub struct HeartbeatRequest {
     pub status: ReportedPresence,
     pub idle_seconds: u32,
     pub current_application: Option<String>,
+    pub current_shift: Option<String>,
     pub agent_version: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub queue_depth: Option<u32>,

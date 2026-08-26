@@ -103,3 +103,17 @@ export const AuditAction = {
   ReportExported: 'report.exported',
 } as const;
 export type AuditAction = (typeof AuditAction)[keyof typeof AuditAction];
+
+/**
+ * Shifts for employees.
+ * DAY_SHIFT: 09:00 - 16:00
+ * NIGHT_SHIFT: 16:00 - 00:00
+ * MIDNIGHT_SHIFT: 00:00 - 09:00
+ */
+export const ShiftType = {
+  Day: 'DAY_SHIFT',
+  Night: 'NIGHT_SHIFT',
+  Midnight: 'MIDNIGHT_SHIFT',
+} as const;
+export type ShiftType = (typeof ShiftType)[keyof typeof ShiftType];
+export const shiftTypeSchema = z.enum(['DAY_SHIFT', 'NIGHT_SHIFT', 'MIDNIGHT_SHIFT']);

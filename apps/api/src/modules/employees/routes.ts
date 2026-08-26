@@ -111,4 +111,14 @@ export async function employeeRoutes(app: FastifyInstance): Promise<void> {
 
     return { ok: true };
   });
+
+  app.post('/disconnect-confirm', async (request, reply) => {
+    // Public endpoint for email link
+    const { deviceId, employeeId, isAccident } = request.body as any;
+    
+    // Here we would typically record the reason to the database (e.g. Audit Log or Device timeline)
+    console.log(`[API] Received disconnect confirm for device ${deviceId}, employee ${employeeId}. Accident: ${isAccident}`);
+
+    return reply.status(200).send({ ok: true, message: 'Confirmation received.' });
+  });
 }

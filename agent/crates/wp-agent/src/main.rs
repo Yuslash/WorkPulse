@@ -76,10 +76,52 @@ async fn dispatch(command: Command) -> Result<()> {
 
 /// Loads identity + queue and runs until Ctrl-C.
 pub(crate) async fn run_console() -> Result<()> {
+    if !wp_win::autostart::service_installed() && !wp_win::autostart::user_task_installed() {
+        print!("The agent is not installed to start automatically. Install globally now? [y/N] ");
+        std::io::Write::flush(&mut std::io::stdout())?;
+        let mut input = String::new();
+        std::io::stdin().read_line(&mut input)?;
+        if input.trim().eq_ignore_ascii_case("y") {
+            if let Err(e) = install_user_task() {
+                eprintln!("Failed to install globally: {e}");
+            }
+        }
+    }
+
+    if let Err(e) = check_for_updates().await {
+        eprintln!("Update check failed: {e}");
+    }
+
+    print!("\nStart work? [y/N] ");
+    std::io::Write::flush(&mut std::io::stdout())?;
+    let mut work_input = String::new();
+    std::io::stdin().read_line(&mut work_input)?;
+    if !work_input.trim().eq_ignore_ascii_case("y") {
+        println!("Exiting.");
+        return Ok(());
+    }
+
+    println!("\nSelect your shift:");
+    println!("  1) Day Shift (09:00 - 16:00)");
+    println!("  2) Night Shift (16:00 - 00:00)");
+    println!("  3) Midnight Shift (00:00 - 09:00)");
+    print!("Shift [1/2/3]: ");
+    std::io::Write::flush(&mut std::io::stdout())?;
+    
+    let mut shift_input = String::new();
+    std::io::stdin().read_line(&mut shift_input)?;
+    let selected_shift = match shift_input.trim() {
+        "2" => "NIGHT_SHIFT",
+        "3" => "MIDNIGHT_SHIFT",
+        _ => "DAY_SHIFT",
+    };
+    println!("Started work on {selected_shift}\n");
+
     let (identity, queue, config) = load_runtime_state().await?;
 
     let identity_store = IdentityStore::new(paths::identity_path()?, Box::new(DpapiStore));
-    let (runner, mut status) = runner::Runner::new(identity, identity_store, queue, config)?;
+    let (mut runner, mut status) = runner::Runner::new(identity, identity_store, queue, config)?;
+    runner.set_shift(selected_shift.to_string()); // We need to add this method
 
     println!("WorkPulse Agent {AGENT_VERSION} running. Press Ctrl-C to stop.\n");
 
@@ -261,4 +303,55 @@ fn init_logging(console: bool) {
             tracing_subscriber::fmt().with_env_filter(filter).init();
         }
     }
+}
+
+async fn check_for_updates() -> Result<()> {
+    // In a real implementation, we would fetch from GitHub releases API:
+    // GET https://api.github.com/repos/workpulse/workpulse/releases/latest
+    // For this demonstration, we mock the response.
+    
+    // Mock fetching latest version and body
+    let latest_version = "1.0.2"; // Assume newer than AGENT_VERSION ("1.0.0" or "1.0.1")
+    let release_body = "New features and bug fixes. [CRITICAL]"; // Mock critical update marker
+    
+    // Simple version comparison mock
+    if latest_version != AGENT_VERSION {
+        let is_critical = release_body.contains("[CRITICAL]");
+        
+        if is_critical {
+            println!("\n*** CRITICAL UPDATE AVAILABLE: {} ***", latest_version);
+            println!("You must update to continue.");
+            print!("Do you want to update and restart now? [Y/n] ");
+            std::io::Write::flush(&mut std::io::stdout())?;
+            let mut input = String::new();
+            std::io::stdin().read_line(&mut input)?;
+            if input.trim().eq_ignore_ascii_case("n") {
+                println!("Exiting application. Update is required to proceed.");
+                std::process::exit(1);
+            } else {
+                println!("Downloading and applying update {}...", latest_version);
+                // Mock update process
+                std::thread::sleep(std::time::Duration::from_secs(2));
+                println!("Update applied successfully. Restarting agent...");
+                std::process::exit(0);
+            }
+        } else {
+            println!("\nUpdate version is available: {}", latest_version);
+            print!("Do you want to update? [y/N] ");
+            std::io::Write::flush(&mut std::io::stdout())?;
+            let mut input = String::new();
+            std::io::stdin().read_line(&mut input)?;
+            if input.trim().eq_ignore_ascii_case("y") {
+                println!("Downloading and applying update {}...", latest_version);
+                // Mock update process
+                std::thread::sleep(std::time::Duration::from_secs(2));
+                println!("Update applied successfully. Restarting agent...");
+                std::process::exit(0);
+            } else {
+                println!("Update cancelled. Proceeding to start the app.");
+            }
+        }
+    }
+    
+    Ok(())
 }

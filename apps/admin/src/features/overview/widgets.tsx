@@ -294,7 +294,7 @@ export function DonutLegend({
               </span>
               <span className="font-bold text-fg">{segment.duration}</span>
             </div>
-            <div className="h-1.5 overflow-hidden rounded-full bg-elevated">
+            <div className="h-1.5 overflow-hidden rounded-full bg-border-strong/40">
               <div
                 className="h-full rounded-full transition-[width] duration-1000 ease-spring"
                 style={{ width: `${segment.percent}%`, background: `rgb(var(--${colorVar}))` }}
@@ -317,7 +317,10 @@ export function SegmentedBar({ total, filled }: { total: number; filled: number 
       {Array.from({ length: total }, (_, i) => (
         <span
           key={i}
-          className={cn('h-3.5 flex-1 rounded-[4px] transition-colors duration-500', i < filled ? 'bg-accent' : 'bg-elevated')}
+          className={cn(
+            'h-3.5 flex-1 rounded-[4px] transition-colors duration-500',
+            i < filled ? 'bg-accent shadow-sm' : 'bg-border-strong/50'
+          )}
           style={{ transitionDelay: `${i * 25}ms` }}
         />
       ))}

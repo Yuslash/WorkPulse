@@ -27,6 +27,7 @@ export interface PresenceRecord {
   organizationId: string;
   state: PresenceState;
   currentApplication: string | null;
+  currentShift: string | null;
   lastSeenAt: Date;
   /** When the device entered its current state — drives the "active for" timer. */
   stateSince: Date;
@@ -67,6 +68,7 @@ class PresenceStore extends EventEmitter {
         organizationId: device.organizationId.toHexString(),
         state,
         currentApplication: isStale ? null : device.currentApplication,
+        currentShift: isStale ? null : (device as any).currentShift, // Cast for safety if type isn't fully propagated yet
         lastSeenAt: device.lastSeenAt,
         stateSince: device.stateSince ?? device.lastSeenAt,
       });
@@ -80,6 +82,7 @@ class PresenceStore extends EventEmitter {
     organizationId: ObjectId;
     state: PresenceState;
     currentApplication: string | null;
+    currentShift?: string | null;
     at: Date;
   }): { changed: boolean; record: PresenceRecord } {
     const key = input.deviceId.toHexString();
@@ -94,6 +97,7 @@ class PresenceStore extends EventEmitter {
       organizationId: input.organizationId.toHexString(),
       state: input.state,
       currentApplication: input.currentApplication,
+      currentShift: input.currentShift ?? previous?.currentShift ?? null,
       lastSeenAt: input.at,
       // Only reset the timer on a real transition; a steady stream of ACTIVE
       // heartbeats must not keep restarting "active for 2h 17m".
@@ -193,6 +197,16 @@ class PresenceStore extends EventEmitter {
       this.byDevice.set(record.deviceId, updated);
       wentOffline.push(record.deviceId);
       this.emitChange(updated);
+      
+      // Fire and forget email check
+      import('./email.js').then(({ emailService }) => {
+        emailService.checkAndSendDisconnectEmail(
+          record.deviceId,
+          record.employeeId,
+          record.currentShift,
+          now
+        ).catch(console.error);
+      });
     }
 
     if (wentOffline.length > 0) {

@@ -102,9 +102,10 @@ pub async fn run(server_url: &str, user_id: &str, password: &str) -> Result<()> 
         .heartbeat(&HeartbeatRequest {
             status: ReportedPresence::Active,
             idle_seconds: 0,
-            current_application: Some("Self Test".into()),
-            agent_version: AGENT_VERSION.to_string(),
-            queue_depth: Some(0),
+            current_application: Some("selftest.exe".into()),
+            current_shift: None,
+            agent_version: AGENT_VERSION.into(),
+            queue_depth: None,
             sent_at: Utc::now(),
         })
         .await

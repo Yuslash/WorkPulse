@@ -95,6 +95,8 @@ export interface DeviceDoc {
   lastReportedState: PresenceState | null;
   currentApplication: string | null;
   stateSince: Date | null;
+  /** Current active shift sent via heartbeat (DAY_SHIFT, NIGHT_SHIFT, MIDNIGHT_SHIFT) */
+  currentShift: string | null;
   enrolledAt: Date;
   updatedAt: Date;
 }

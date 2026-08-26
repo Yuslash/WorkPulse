@@ -130,6 +130,7 @@ export const heartbeatRequestSchema = z.object({
   status: reportedPresenceSchema,
   idleSeconds: z.number().int().nonnegative().max(86_400),
   currentApplication: z.string().max(255).nullable().optional(),
+  currentShift: z.string().max(32).nullable().optional(),
   agentVersion: z.string().min(1).max(32),
   queueDepth: z.number().int().nonnegative().optional(),
   sentAt: isoDateTime,
