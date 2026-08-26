@@ -1,0 +1,70 @@
+{
+  "hash": "445458f0",
+  "configHash": "153ba0bb",
+  "lockfileHash": "4127d699",
+  "browserHash": "1095a9a0",
+  "optimized": {
+    "react": {
+      "src": "../../../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "b30afa70",
+      "needsInterop": true
+    },
+    "recharts": {
+      "src": "../../../../node_modules/recharts/es6/index.js",
+      "file": "recharts.js",
+      "fileHash": "a4ba6adb",
+      "needsInterop": false
+    },
+    "@radix-ui/react-tabs": {
+      "src": "../../../../node_modules/@radix-ui/react-tabs/dist/index.mjs",
+      "file": "@radix-ui_react-tabs.js",
+      "fileHash": "a16a45b5",
+      "needsInterop": false
+    },
+    "lucide-react": {
+      "src": "../../../../node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "96220d31",
+      "needsInterop": false
+    },
+    "react-dom/client": {
+      "src": "../../../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "3ef29193",
+      "needsInterop": true
+    },
+    "@tanstack/react-query": {
+      "src": "../../../../node_modules/@tanstack/react-query/build/modern/index.js",
+      "file": "@tanstack_react-query.js",
+      "fileHash": "027e13a2",
+      "needsInterop": false
+    },
+    "react-router-dom": {
+      "src": "../../../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "db95d7f7",
+      "needsInterop": false
+    },
+    "zod": {
+      "src": "../../../../node_modules/zod/index.js",
+      "file": "zod.js",
+      "fileHash": "9a9266df",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-ZFAGCL3I": {
+      "file": "chunk-ZFAGCL3I.js"
+    },
+    "chunk-43SUNCRR": {
+      "file": "chunk-43SUNCRR.js"
+    },
+    "chunk-U35KPCC7": {
+      "file": "chunk-U35KPCC7.js"
+    },
+    "chunk-4MBMRILA": {
+      "file": "chunk-4MBMRILA.js"
+    }
+  }
+}
